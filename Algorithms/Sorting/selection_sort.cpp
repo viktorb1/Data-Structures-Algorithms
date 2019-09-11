@@ -1,7 +1,6 @@
 using namespace std;
 
 #include <iostream>
-#include <climits>
 
 void printArray(int *nums, int size);
 void selection_sort(int* nums, int size);

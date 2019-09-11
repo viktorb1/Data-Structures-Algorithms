@@ -1,7 +1,6 @@
 using namespace std;
 
 #include <iostream>
-#include <climits>
 
 void printArray(int *nums, int size);
 void merge_sort(int* nums, int p, int r);
