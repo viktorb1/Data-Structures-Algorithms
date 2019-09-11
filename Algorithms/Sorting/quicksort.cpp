@@ -12,6 +12,7 @@ int main() {
 	const int size = 10;
 	int nums[size] = {-9, 2, 2, 9, 31, 12, 3, 5, -4, -3};
 	printArray(nums, size);
+	quick_sort(nums, 0, size-1);
 	printArray(nums, size);
 	return 0;
 }
