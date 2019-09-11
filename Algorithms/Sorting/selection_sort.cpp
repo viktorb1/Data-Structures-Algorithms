@@ -4,7 +4,7 @@ using namespace std;
 #include <climits>
 
 void printArray(int *nums, int size);
-int selection_sort(int* nums, int size);
+void selection_sort(int* nums, int size);
 
 
 int main() {
@@ -17,7 +17,7 @@ int main() {
 }
 
 
-int selection_sort(int* nums, int size) {
+void selection_sort(int* nums, int size) {
 	for (int i = 0; i < size-1; i++) {
 		
 		int min_index = i;

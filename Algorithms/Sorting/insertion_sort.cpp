@@ -3,7 +3,7 @@ using namespace std;
 #include <iostream>
 
 void printArray(int *nums, int size);
-int insertion_sort(int* nums, int size);
+void insertion_sort(int* nums, int size);
 
 
 int main() {
@@ -16,19 +16,13 @@ int main() {
 }
 
 
-int insertion_sort(int* nums, int size) {
+void insertion_sort(int* nums, int size) {
 	for (int i = 1; i < size; i++) {
-
 		int j, curr = nums[i];
+		for (j = i-1; j >= 0 && nums[j] > curr; j--)
+			nums[j+1] = nums[j];
 
-		for (j = i-1; j >= 0; j--) {
-			if (nums[j] > curr)
-				nums[j+1] = nums[j];
-			else
-				break;
-
-			nums[j] = curr;
-		}
+		nums[j+1] = curr;
 	}
 }
 

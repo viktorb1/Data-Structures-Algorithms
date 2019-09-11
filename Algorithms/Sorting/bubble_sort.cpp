@@ -4,7 +4,7 @@ using namespace std;
 #include <climits>
 
 void printArray(int *nums, int size);
-int bubble_sort(int* nums, int size);
+void bubble_sort(int* nums, int size);
 
 
 int main() {
@@ -17,7 +17,7 @@ int main() {
 }
 
 
-int bubble_sort(int* nums, int size) {
+void bubble_sort(int* nums, int size) {
 	for(int i = 0; i < size-1; i++)
 		for(int j = 0; j < size-i-1; j++)
 			if (nums[j] > nums[j+1])
