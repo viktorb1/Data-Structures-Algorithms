@@ -30,4 +30,3 @@ void printArray(int* nums, int size) {
 		else
 			cout << nums[i] << endl;
 }
-
