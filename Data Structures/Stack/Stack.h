@@ -10,7 +10,7 @@ class Stack {
 	list<T> data;
 
 public:
-	void push(const T &num);
+	void push(const T& num);
 	T pop();
 };
 

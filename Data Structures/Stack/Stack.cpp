@@ -3,7 +3,7 @@
 
 
 template <typename T>
-void Stack<T>::push(const T &val) {
+void Stack<T>::push(const T& val) {
 	data.push_back(val);
 }
 
