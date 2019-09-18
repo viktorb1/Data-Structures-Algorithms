@@ -51,7 +51,7 @@ void List<T>::insert(const T& data, int i) {
 		return;
 	}
 
-	while (curr != NULL && i >= 0) {
+	while (curr != NULL && i > 0) {
 		prev = curr;
 		curr = curr->next;
 		i--;

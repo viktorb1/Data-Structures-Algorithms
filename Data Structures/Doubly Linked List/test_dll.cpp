@@ -1,4 +1,4 @@
-#include "LinkedList.h"
+#include "DoublyLinkedList.h"
 
 using namespace std;
 
@@ -6,13 +6,21 @@ int main() {
 	List<int> test_list;
 	test_list.insert(1,0);
 	test_list.print_list();
+	test_list.print_list_reverse();
 	cout << "Index at 0 is: " << test_list.get(0) << endl;
 	test_list.insert(2,0);
 	test_list.print_list();
+	test_list.print_list_reverse();
 	test_list.insert(3,2);
 	test_list.print_list();
+	test_list.print_list_reverse();
 	test_list.insert(4,2);
 	test_list.print_list();
+	test_list.print_list_reverse();
+	test_list.insert(9,2);
+	test_list.print_list();
+	test_list.print_list_reverse();
+	test_list.remove(4);
 	cout << "Index at 2 is: " << test_list.get(2) << endl;
 	cout << "Index at 3 is: " << test_list.get(3) << endl;
 
