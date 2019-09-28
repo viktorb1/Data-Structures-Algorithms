@@ -65,6 +65,7 @@ public:
 	V get(K key);
 	void remove(K key);
 	~HashTable();
+  size_t getSize();
 };
 
 #include "HashTable.cpp"

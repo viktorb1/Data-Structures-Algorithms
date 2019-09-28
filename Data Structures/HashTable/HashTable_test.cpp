@@ -14,15 +14,27 @@ int main() {
 	test.remove("John");
 	test.remove("John");
 
-	string multi_add = "a";
+	string multi_add;
 
 
 	for (int i = 0; i < 30; i++) {
-		multi_add += i+98;
+		multi_add += i+97;
 		test.insert(multi_add, i);
 	}
 
+	cout << "The key for abcde is : " << test.get("abcde") << endl;
+
 	test.printHashTable();
+
+	for (int i = 0; i < 30; i++) {
+		multi_add.clear();
+		multi_add += i+97;
+		test.remove(multi_add);
+	}
+
+	test.printHashTable();
+	
+	cout << "THE SIZE IS: " << test.getSize() << endl;
 
 	return 0;
 }

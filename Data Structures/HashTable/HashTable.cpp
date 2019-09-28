@@ -26,6 +26,11 @@ HashTable<K,V>::~HashTable() {
 	delete[] storage;
 }
 
+template <typename K, typename V>
+size_t HashTable<K,V>::getSize() {
+	return size;
+}
+
 
 template <typename K, typename V>
 size_t HashTable<K,V>::hashFunc(K key) {
@@ -69,7 +74,8 @@ void HashTable<K,V>::resize() {
 		HashNode<K,V>** new_table = new HashNode<K,V>*[primes[++curr_prime]];
 		std::memset(new_table, 0, sizeof(HashNode<K,V>*)*primes[curr_prime]);
 
-		int old_capacity = capacity;
+		size_t old_capacity = capacity;
+		size = 0;
 		HashNode<K,V>** old_table = storage;
 		storage = new_table;
 		capacity = primes[curr_prime];
