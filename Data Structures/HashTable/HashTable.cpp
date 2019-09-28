@@ -15,6 +15,7 @@ HashTable<K,V>::HashTable() : size(0), capacity(primes[0]), curr_prime(0) {
 	}
 }
 
+
 template <typename K, typename V>
 HashTable<K,V>::~HashTable() {
 	for (int i = 0; i < capacity; i++) {
@@ -34,54 +35,64 @@ size_t HashTable<K,V>::hashFunc(K key) {
 
 template <typename K, typename V>
 void HashTable<K,V>::insert(K key, V value) {
-	if (size >= capacity / 2) {
-		std::cout << "ITS RESIZING!! CAP IS " << capacity << std::endl;
+	if (size > capacity / 2) {
+		std::cout << "ITS RESIZING!! CAP IS " << capacity << ", SIZE IS: " << size << std::endl;
 		resize();
 	}
 
 	size_t i = hashFunc(key);
 
+	// std::cout << "THE INDEX FOR THE KEY: " << key << "IS: " << i << std::endl;
+
 	while (storage[i] && storage[i]->key != key) {
 		i++;
+		i %= capacity;
 	}
 
-	if (storage[i] && storage[i]->key == key)
-		storage[i]->value = value;
-	else {
-		storage[i] = new HashNode<K,V>(key, value);
-		size++;
+	if (storage[i]) {
+		delete storage[i];
+		size--;
 	}
+
+	storage[i] = new HashNode<K,V>(key, value);
+	size++;
 }
 
 
 template <typename K, typename V>
 void HashTable<K,V>::resize() {
-	HashNode<K,V>** new_table;
 
 	// create a new hash table
 	if (curr_prime == NUM_OF_PRIMES - 1) {
 		throw std::length_error("Cannot resize, hashTable too large");
 	} else {
-		new_table = new HashNode<K,V>*[primes[++curr_prime]];
-		std::memset(new_table, 0, sizeof(HashNode<K,V>*));
+		HashNode<K,V>** new_table = new HashNode<K,V>*[primes[++curr_prime]];
+		std::memset(new_table, 0, sizeof(HashNode<K,V>*)*primes[curr_prime]);
+
+		int old_capacity = capacity;
+		HashNode<K,V>** old_table = storage;
+		storage = new_table;
+		capacity = primes[curr_prime];
 
 		// copy over old hash table to new hash table
-		for (int i = 0; i < capacity; i++) {
-			if (storage[i]) {
-				new_table[hashFunc(storage[i]->key)] = storage[i];
+		for (int i = 0; i < old_capacity; i++) {
+			if (old_table[i]) {
+				insert(old_table[i]->key, old_table[i]->value);
+				delete old_table[i];
 			}
 		}
 
-		swap(new_table, storage);
-		delete[] new_table;
-		capacity = primes[curr_prime];
+		delete[] old_table;
 	}
 }
 
 template <typename K, typename V>
 void HashTable<K,V>::printHashTable() {
+	int j = 1; 
+
 	for (int i = 0; i < capacity; i++) {
 		if (storage[i]) {
+			std::cout << j++ << ". ";
 			std::cout << "KEY: " << storage[i]->key << " VALUE: " << storage[i]->value;
 			std::cout << " INDEX: " << i << std::endl;
 		}

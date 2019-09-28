@@ -5,6 +5,7 @@ using namespace std;
 
 int main() {
 	HashTable<string, int> test;
+
 	test.insert("John", 45);
 	test.insert("Mary", 24);
 	test.insert("John", 48);
@@ -16,8 +17,8 @@ int main() {
 	string multi_add = "a";
 
 
-	for (int i = 0; i < 10; i++) {
-		multi_add += (i+65);
+	for (int i = 0; i < 30; i++) {
+		multi_add += i+98;
 		test.insert(multi_add, i);
 	}
 
