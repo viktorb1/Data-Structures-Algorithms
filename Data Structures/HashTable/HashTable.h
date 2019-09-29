@@ -47,14 +47,15 @@ class HashNode {
 	V value;
 	friend HashTable<K,V>;
 public:
+  HashNode();
 	HashNode(K key, V value);
-	HashNode() = delete;
 };
 
 
 template <typename K, typename V>
 class HashTable {
 	HashNode<K,V>** storage;
+  HashNode<K,V>* empty_node;
 	int size, capacity, curr_prime;
 	size_t hashFunc(K key);
 	void resize();

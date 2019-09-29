@@ -5,9 +5,13 @@
 template <typename K, typename V>
 HashNode<K,V>::HashNode(K key, V value) : key(key), value(value) {}
 
+template <typename K, typename V>
+HashNode<K,V>::HashNode() {}
+
 
 template <typename K, typename V>
 HashTable<K,V>::HashTable() : size(0), capacity(primes[0]), curr_prime(0) {
+	empty_node = new HashNode<K,V>();
 	storage = new HashNode<K,V>*[capacity];
 
 	for (int i = 0; i < capacity; i++) {
@@ -18,8 +22,10 @@ HashTable<K,V>::HashTable() : size(0), capacity(primes[0]), curr_prime(0) {
 
 template <typename K, typename V>
 HashTable<K,V>::~HashTable() {
+	delete empty_node;
+
 	for (int i = 0; i < capacity; i++) {
-		if (storage[i])
+		if (storage[i] && storage[i] != empty_node)
 			delete storage[i];
 	}
 
@@ -40,27 +46,23 @@ size_t HashTable<K,V>::hashFunc(K key) {
 
 template <typename K, typename V>
 void HashTable<K,V>::insert(K key, V value) {
-	if (size > capacity / 2) {
-		std::cout << "ITS RESIZING!! CAP IS " << capacity << ", SIZE IS: " << size << std::endl;
+	if (size > capacity / 2)
 		resize();
-	}
 
 	size_t i = hashFunc(key);
 
-	// std::cout << "THE INDEX FOR THE KEY: " << key << "IS: " << i << std::endl;
-
-	while (storage[i] && storage[i]->key != key) {
+	while (storage[i] && storage[i]->key != key && storage[i] != empty_node) {
 		i++;
 		i %= capacity;
 	}
 
-	if (storage[i]) {
+	if (!storage[i] || storage[i] == empty_node)
+		size++;
+	else
 		delete storage[i];
-		size--;
-	}
 
 	storage[i] = new HashNode<K,V>(key, value);
-	size++;
+
 }
 
 
@@ -97,7 +99,7 @@ void HashTable<K,V>::printHashTable() {
 	int j = 1; 
 
 	for (int i = 0; i < capacity; i++) {
-		if (storage[i]) {
+		if (storage[i] && storage[i] != empty_node) {
 			std::cout << j++ << ". ";
 			std::cout << "KEY: " << storage[i]->key << " VALUE: " << storage[i]->value;
 			std::cout << " INDEX: " << i << std::endl;
@@ -112,11 +114,14 @@ void HashTable<K,V>::remove(K key) {
 	int i = hashFunc(key);
 	int starting_i = i;
 
+	// it's not deleting the other values because it can't skip over the previous values
+
 	while(storage[i]) {
 		if(storage[i]->key == key) {
 			delete storage[i];
-			storage[i] = NULL;
+			storage[i] = empty_node;
 			size--;
+			break;
 		}
 
 		i++;

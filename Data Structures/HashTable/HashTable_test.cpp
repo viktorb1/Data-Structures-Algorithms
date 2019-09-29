@@ -26,14 +26,19 @@ int main() {
 
 	test.printHashTable();
 
+	multi_add.clear();
+
 	for (int i = 0; i < 30; i++) {
-		multi_add.clear();
 		multi_add += i+97;
+
+		if (multi_add == "abcdefgh")
+			cout << "DELETING abcdefgh\n\n\n";
+
 		test.remove(multi_add);
 	}
 
 	test.printHashTable();
-	
+
 	cout << "THE SIZE IS: " << test.getSize() << endl;
 
 	return 0;
