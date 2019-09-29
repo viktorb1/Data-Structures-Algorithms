@@ -30,10 +30,6 @@ int main() {
 
 	for (int i = 0; i < 30; i++) {
 		multi_add += i+97;
-
-		if (multi_add == "abcdefgh")
-			cout << "DELETING abcdefgh\n\n\n";
-
 		test.remove(multi_add);
 	}
 
