@@ -10,6 +10,7 @@ public:
 	list<T> data;
 	void push(const T& val);
 	T pop();
+	bool isEmpty();
 };
 
 #include "Queue.cpp"

@@ -139,7 +139,7 @@ void MaxHeap::percolate_down(int i) {
 void MaxHeap::printHeap() {
 	int max_for_line = 1, j = 0;
 
-	cout << "Heap: \n";
+	cout << "Tree: \n";
 
 	for (int i = 0; i < heap_size; i++) {
 		cout << heap[i] << " ";
