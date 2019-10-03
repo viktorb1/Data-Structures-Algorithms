@@ -7,22 +7,22 @@ Node<T>::Node(T data) : data(data), left(NULL), right(NULL) {}
 
 
 template <typename T>
-BST<T>::BST() : root(NULL) {}
+AVLTree<T>::AVLTree() : root(NULL) {}
 
 
 template <typename T>
-BST<T>::BST(T &data) {
+AVLTree<T>::AVLTree(T &data) {
 	root = new Node<T>(data);
 }
 
 
 template <typename T>
-BST<T>::~BST() {
+AVLTree<T>::~AVLTree() {
 	destroy_recursive(root);
 }
 
 template <typename T>
-void BST<T>::destroy_recursive(Node<T> *node) {
+void AVLTree<T>::destroy_recursive(Node<T> *node) {
 	if (node) {
 		destroy_recursive(node->left);
 		destroy_recursive(node->right);
@@ -32,87 +32,61 @@ void BST<T>::destroy_recursive(Node<T> *node) {
 
 
 template <typename T>
-void BST<T>::insert(const T &data) {
-	Node<T>* new_node = new Node<T>(data);
+void AVLTree<T>::insert(const T &data) {
+	root = insert_node(root, data);
+}
 
-	Node<T>* to_insert = root;
-	Node<T>* parent = NULL;
 
-	while (to_insert) {
-		parent = to_insert;
+template <typename T>
+Node<T>* AVLTree<T>::insert_node(Node<T> *curr, const T &data) {
+	if (!curr)
+		return new Node<T>(data);
 
-		if (to_insert->data > data)
-			to_insert = to_insert->left;
-		else if (to_insert->data < data)
-			to_insert = to_insert->right;
-		else
-			return;
-	}
+	if (data < curr->data)
+		curr->left = insert_node(curr->left, data);
+	else if (data > curr->data)
+		curr->right = insert_node(curr->right, data);
 
-	if (!parent) {
-		root = new_node;
-	} else if (parent->data > data) {
-		parent->left = new_node;
-	} else {
-		parent->right = new_node;
-	}
+	return curr;
 }
 
 template <typename T>
-void BST<T>::remove(const T &data) {
-	Node<T> *to_remove = root, *parent = NULL;
+void AVLTree<T>::remove(const T &data) {
+	root = remove_node(root, data);
+}
 
-	while (to_remove) {
-		if (to_remove->data == data) {
-			break;
-		} else if (to_remove->data > data) {
-			parent = to_remove;
-			to_remove = to_remove->left;
+
+template <typename T>
+Node<T>* AVLTree<T>::remove_node(Node<T> *curr, const T &data) {
+	if (!curr)
+		return NULL;
+	else if (curr->data == data) {
+		if (!curr->left)
+			return curr->right;
+		else if (!curr->right) {
+			return curr->left;
 		} else {
-			parent = to_remove;
-			to_remove = to_remove->right;
+			Node<T> *min = get_and_disconnect_min(curr->right);
+			min->left = curr->left;
+
+			if (min != curr->right)
+				min->right = curr->right;
+
+			return min;
 		}
 	}
 
-	if (to_remove && !to_remove->left) {
-		if (to_remove == root)
-			root = to_remove->right;
-		else if (parent->right == to_remove)
-			parent->right = to_remove->right;
-		else
-			parent->left = to_remove->right;
+	if (data < curr->data)
+		curr->left = remove_node(curr->left, data);
+	else if (data > curr->data)
+		curr->right = remove_node(curr->right, data);
 
-		delete to_remove;
-	} else if (to_remove && !to_remove->right) {
-		if (to_remove == root)
-			root = to_remove->left;
-		else if (parent->right == to_remove)
-			parent->right = to_remove->left;
-		else
-			parent->left = to_remove->left;
-
-		delete to_remove;
-	} else if (to_remove && to_remove->left && to_remove->right) {
-		Node<T> *new_node = get_and_disconnect_min(to_remove->right);
-
-		if (to_remove == root)
-			root = new_node;
-		else if (parent->right == to_remove)
-			parent->right = new_node;
-		else
-			parent->left = new_node;
-
-		new_node->left = to_remove->left;
-
-		if (new_node != to_remove->right)
-			new_node->right = to_remove->right;
-
-		delete to_remove;
-	}
+	return curr;
 }
 
+
 template <typename T>
-Node<T>* BST<T>::get_and_disconnect_min(Node<T>* node) {
+Node<T>* AVLTree<T>::get_and_disconnect_min(Node<T>* node) {
 	
 	Node<T> *parent = NULL;
 
@@ -129,7 +103,7 @@ Node<T>* BST<T>::get_and_disconnect_min(Node<T>* node) {
 
 
 template <typename T>
-int BST<T>::get_height(Node<T> *curr) {
+int AVLTree<T>::get_height(Node<T> *curr) {
 	if (!curr)
 		return 0;
 
@@ -138,7 +112,7 @@ int BST<T>::get_height(Node<T> *curr) {
 
 
 template <typename T>
-void BST<T>::print_tree() {
+void AVLTree<T>::print_tree() {
     int height = get_height(root); 
     
     for (int i = 0; i < height; i++) { 
@@ -148,7 +122,7 @@ void BST<T>::print_tree() {
 }
   
 template <typename T>
-void BST<T>::printLevel(Node<T>* curr, int level) 
+void AVLTree<T>::printLevel(Node<T>* curr, int level) 
 { 
     if (!curr)
         cout << " * "; 
@@ -163,7 +137,7 @@ void BST<T>::printLevel(Node<T>* curr, int level)
 
 
 template <typename T>
-void BST<T>::bfs() {
+void AVLTree<T>::bfs() {
 	Queue<Node<T>*> to_visit;
 	Node<T> *curr;
 
@@ -185,14 +159,14 @@ void BST<T>::bfs() {
 
 
 template <typename T>
-void BST<T>::dfs_inorder() {
+void AVLTree<T>::dfs_inorder() {
 	cout << "Inorder: ";
 	inorder(root);
 	cout << endl;
 }
 
 template <typename T>
-void BST<T>::inorder(Node<T>* curr) {
+void AVLTree<T>::inorder(Node<T>* curr) {
 
 	if (!curr)
 		return;
@@ -207,7 +181,7 @@ void BST<T>::inorder(Node<T>* curr) {
 
 
 template <typename T>
-void BST<T>::dfs_preorder() {
+void AVLTree<T>::dfs_preorder() {
 	cout << "Preorder: ";
 	preorder(root);
 	cout << endl;
@@ -215,7 +189,7 @@ void BST<T>::dfs_preorder() {
 
 
 template <typename T>
-void BST<T>::preorder(Node<T>* curr) {
+void AVLTree<T>::preorder(Node<T>* curr) {
 
 	if (!curr)
 		return;
@@ -229,7 +203,7 @@ void BST<T>::preorder(Node<T>* curr) {
 
 
 template <typename T>
-void BST<T>::dfs_postorder() {
+void AVLTree<T>::dfs_postorder() {
 	cout << "Postorder: ";
 	postorder(root);
 	cout << endl;
@@ -237,7 +211,7 @@ void BST<T>::dfs_postorder() {
 
 
 template <typename T>
-void BST<T>::postorder(Node<T>* curr) {
+void AVLTree<T>::postorder(Node<T>* curr) {
 
 	if (!curr)
 		return;
@@ -250,7 +224,7 @@ void BST<T>::postorder(Node<T>* curr) {
 
 
 template <typename T>
-bool BST<T>::find(const T& data) {
+bool AVLTree<T>::find(const T& data) {
 	Node<T> *curr = root;
 	while(curr) {
 		if (curr->data == data)

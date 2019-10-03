@@ -1,10 +1,10 @@
-#include "bst.h"
+#include "avl.h"
 #include <iostream>
 
 using namespace std;
 
 int main() {
-	// BST<int> tree;
+	// AVLTree<int> tree;
 	// tree.remove(39043);
 	// tree.insert(5);
 	// tree.insert(4);
@@ -35,7 +35,7 @@ int main() {
 	// tree.remove(5);
 	// tree.print_tree();
 
-	BST<int> tree2;
+	AVLTree<int> tree2;
 	tree2.insert(-5);
 	tree2.insert(-4);
 	tree2.insert(-8);
