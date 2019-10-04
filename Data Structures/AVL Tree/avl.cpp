@@ -50,8 +50,6 @@ Node<T>* AVLTree<T>::insert_node(Node<T> *curr, const T &data) {
 	}
 
 	curr = check_for_imbalances(curr);
-
-
 	return curr;
 }
 
@@ -59,20 +57,16 @@ template <typename T>
 Node<T>* AVLTree<T>::check_for_imbalances(Node<T>* curr) {
 	int bf = get_bf(curr);
 		
-	if (bf == 2)
-	{
-		if (get_bf(curr->right) == 1) {
+	if (bf == 2) {
+		if (get_bf(curr->right) == 1)
 			curr = rr_rotation(curr);
-		} else if (get_bf(curr->right) == -1) {
+		else if (get_bf(curr->right) == -1)
 			curr = rl_rotation(curr);
-		}
 	} else if (bf == -2) {
-		if (get_bf(curr->left) == -1) {
+		if (get_bf(curr->left) == -1)
 			curr = ll_rotation(curr);
-
-		} else if (get_bf(curr->left) == 1) {
+		else if (get_bf(curr->left) == 1)
 			curr = lr_rotation(curr);
-		}
 	}
 
 	return curr;
@@ -88,7 +82,6 @@ template <typename T>
 Node<T>* AVLTree<T>::rr_rotation(Node<T>* parent) {
 	Node<T>* pivot = parent->right;
 	parent->right = pivot->left;
-	cout << "RR\n";
 
 	if (!parent->right)
 		parent->height_right = 0;
@@ -105,7 +98,6 @@ template <typename T>
 Node<T>* AVLTree<T>::ll_rotation(Node<T>* parent) {
 	Node<T>* pivot = parent->left;
 	parent->left = pivot->right;
-	cout << "RR\n";
 
 	if (!parent->left)
 		parent->height_left = 0;
@@ -120,7 +112,6 @@ Node<T>* AVLTree<T>::ll_rotation(Node<T>* parent) {
 
 template <typename T>
 Node<T>* AVLTree<T>::lr_rotation(Node<T>* parent) {
-	cout << "LR\n";
 	Node<T>* left = parent->left;
 	parent->left = rr_rotation(left);
 	Node<T>* new_parent = ll_rotation(parent);
@@ -135,7 +126,6 @@ Node<T>* AVLTree<T>::lr_rotation(Node<T>* parent) {
 
 template <typename T>
 Node<T>* AVLTree<T>::rl_rotation(Node<T>* parent) {
-	cout << "RL\n";
 	Node<T>* right = parent->right;
 	parent->right = ll_rotation(right);
 	Node<T>* new_parent = rr_rotation(parent);
@@ -202,7 +192,6 @@ Node<T>* AVLTree<T>::remove_node(Node<T> *curr, const T &data) {
 
 template <typename T>
 Node<T>* AVLTree<T>::get_and_disconnect_min(Node<T>* node) {
-	
 	Node<T> *parent = NULL;
 
 	while(node && node->left) {
@@ -218,7 +207,6 @@ Node<T>* AVLTree<T>::get_and_disconnect_min(Node<T>* node) {
 		}
 
 		node->height_right = 0;
-
 		parent->left = node->right;
 	}
 
@@ -284,29 +272,28 @@ void AVLTree<T>::bfs() {
 
 
 template <typename T>
-void AVLTree<T>::dfs_inorder() {
+void AVLTree<T>::dfs_inorder() 
+{
 	cout << "Inorder: ";
 	inorder(root);
 	cout << endl;
 }
 
 template <typename T>
-void AVLTree<T>::inorder(Node<T>* curr) {
-
+void AVLTree<T>::inorder(Node<T>* curr) 
+{
 	if (!curr)
 		return;
 	
 	inorder(curr->left);
-
 	cout << curr->data << " ";
-
 	inorder(curr->right);
-
 }
 
 
 template <typename T>
-void AVLTree<T>::dfs_preorder() {
+void AVLTree<T>::dfs_preorder() 
+{
 	cout << "Preorder: ";
 	preorder(root);
 	cout << endl;
@@ -314,21 +301,20 @@ void AVLTree<T>::dfs_preorder() {
 
 
 template <typename T>
-void AVLTree<T>::preorder(Node<T>* curr) {
-
+void AVLTree<T>::preorder(Node<T>* curr) 
+{
 	if (!curr)
 		return;
 
 	cout << curr->data << " ";
-
 	preorder(curr->left);
 	preorder(curr->right);
-
 }
 
 
 template <typename T>
-void AVLTree<T>::dfs_postorder() {
+void AVLTree<T>::dfs_postorder() 
+{
 	cout << "Postorder: ";
 	postorder(root);
 	cout << endl;
@@ -336,8 +322,8 @@ void AVLTree<T>::dfs_postorder() {
 
 
 template <typename T>
-void AVLTree<T>::postorder(Node<T>* curr) {
-
+void AVLTree<T>::postorder(Node<T>* curr) 
+{
 	if (!curr)
 		return;
 
@@ -349,7 +335,8 @@ void AVLTree<T>::postorder(Node<T>* curr) {
 
 
 template <typename T>
-bool AVLTree<T>::find(const T& data) {
+bool AVLTree<T>::find(const T& data) 
+{
 	Node<T> *curr = root;
 	while(curr) {
 		if (curr->data == data)
