@@ -3,7 +3,7 @@
 using namespace std;
 
 template <typename T>
-Node<T>::Node(T data) : data(data), left(NULL), right(NULL) {}
+Node<T>::Node(T data) : data(data), left(NULL), right(NULL), height_left(0), height_right(0) {}
 
 
 template <typename T>
@@ -39,16 +39,107 @@ void AVLTree<T>::insert(const T &data) {
 
 template <typename T>
 Node<T>* AVLTree<T>::insert_node(Node<T> *curr, const T &data) {
-	if (!curr)
+	if (!curr) {
 		return new Node<T>(data);
-
-	if (data < curr->data)
+	} else if (data < curr->data) {
 		curr->left = insert_node(curr->left, data);
-	else if (data > curr->data)
+		curr->height_left = 1 + max(curr->left->height_right, curr->left->height_left);
+	} else if (data > curr->data) {
 		curr->right = insert_node(curr->right, data);
+		curr->height_right = 1 + max(curr->right->height_right, curr->right->height_left);
+	}
+
+	int bf = get_bf(curr);
+		
+	if (bf == 2)
+	{
+		if (get_bf(curr->right) == 1) {
+			curr = rr_rotation(curr);
+		} else if (get_bf(curr->right) == -1) {
+			curr = rl_rotation(curr);
+		}
+	} else if (bf == -2) {
+		if (get_bf(curr->left) == -1) {
+			curr = ll_rotation(curr);
+
+		} else if (get_bf(curr->left) == 1) {
+			curr = lr_rotation(curr);
+		}
+	}
 
 	return curr;
 }
+
+template <typename T>
+int AVLTree<T>::get_bf(Node<T> *curr) {
+	return curr->height_right - curr->height_left;
+}
+
+
+template <typename T>
+Node<T>* AVLTree<T>::rr_rotation(Node<T>* parent) {
+	Node<T>* pivot = parent->right;
+	parent->right = pivot->left;
+	cout << "RR\n";
+
+	if (!parent->right)
+		parent->height_right = 0;
+	else
+		parent->height_right = 1 + max(parent->right->height_right, parent->right->height_left);
+
+	pivot->left = parent;
+	pivot->height_left = 1 + max(pivot->left->height_right, pivot->left->height_left);
+	return pivot;
+}
+
+
+template <typename T>
+Node<T>* AVLTree<T>::ll_rotation(Node<T>* parent) {
+	Node<T>* pivot = parent->left;
+	parent->left = pivot->right;
+	cout << "RR\n";
+
+	if (!parent->left)
+		parent->height_left = 0;
+	else
+		parent->height_left = 1 + max(parent->left->height_right, parent->left->height_left);
+
+	pivot->right = parent;
+	pivot->height_right = 1 + max(pivot->right->height_right, pivot->right->height_left);
+	return pivot;
+}
+
+
+template <typename T>
+Node<T>* AVLTree<T>::lr_rotation(Node<T>* parent) {
+	cout << "LR\n";
+	Node<T>* left = parent->left;
+	parent->left = rr_rotation(left);
+	Node<T>* new_parent = ll_rotation(parent);
+
+	if (!parent->left)
+		parent->height_left = 0;
+	else
+		parent->height_left = 1 + max(parent->left->height_left, parent->left->height_right);
+	
+	return new_parent;
+}
+
+template <typename T>
+Node<T>* AVLTree<T>::rl_rotation(Node<T>* parent) {
+	cout << "RL\n";
+	Node<T>* right = parent->right;
+	parent->right = ll_rotation(right);
+	Node<T>* new_parent = rr_rotation(parent);
+
+	if (!parent->right)
+		parent->height_right = 0;
+	else
+		parent->height_right = 1 + max(parent->right->height_left, parent->right->height_right);
+	
+	return new_parent;
+}
+
 
 template <typename T>
 void AVLTree<T>::remove(const T &data) {
@@ -74,9 +165,7 @@ Node<T>* AVLTree<T>::remove_node(Node<T> *curr, const T &data) {
 
 			return min;
 		}
-	}
-
-	if (data < curr->data)
+	} else if (data < curr->data)
 		curr->left = remove_node(curr->left, data);
 	else if (data > curr->data)
 		curr->right = remove_node(curr->right, data);
@@ -119,6 +208,8 @@ void AVLTree<T>::print_tree() {
         printLevel(root, i); 
         cout << endl;
     }
+
+    cout << endl;
 }
   
 template <typename T>
@@ -141,20 +232,19 @@ void AVLTree<T>::bfs() {
 	Queue<Node<T>*> to_visit;
 	Node<T> *curr;
 
-	cout << "BFS: ";
+	cout << "BFS: \n";
 	to_visit.push(root);
 
 	while(!to_visit.isEmpty()) {
 		curr = to_visit.pop();
 		cout << curr->data << " ";
-		
+		cout << "(" << curr->height_left << ", " << curr->height_right << ") " << endl;
+
 		if (curr->left)
 			to_visit.push(curr->left);
 		if (curr->right)
 			to_visit.push(curr->right);
 	}
-
-	cout << endl;
 }
 
 

@@ -9,6 +9,7 @@ template <typename T>
 class Node {
 	T data;
 	Node<T> *left, *right;
+	int height_left, height_right;
 	friend AVLTree<T>;
 public:
 	Node(T data);
@@ -28,6 +29,11 @@ class AVLTree {
 	void postorder(Node<T>* curr);
 	Node<T>* insert_node(Node<T> *curr, const T &data);
 	Node<T>* remove_node(Node<T> *curr, const T &data);
+	Node<T>* rr_rotation(Node<T>* parent);
+	Node<T>* ll_rotation(Node<T>* parent);
+	Node<T>* lr_rotation(Node<T>* parent);
+	Node<T>* rl_rotation(Node<T>* parent);
+	int get_bf(Node<T> *curr);
 public:
 	AVLTree();
 	AVLTree(T &root);
