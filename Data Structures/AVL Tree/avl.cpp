@@ -49,6 +49,14 @@ Node<T>* AVLTree<T>::insert_node(Node<T> *curr, const T &data) {
 		curr->height_right = 1 + max(curr->right->height_right, curr->right->height_left);
 	}
 
+	curr = check_for_imbalances(curr);
+
+
+	return curr;
+}
+
+template <typename T>
+Node<T>* AVLTree<T>::check_for_imbalances(Node<T>* curr) {
 	int bf = get_bf(curr);
 		
 	if (bf == 2)
@@ -149,13 +157,18 @@ void AVLTree<T>::remove(const T &data) {
 
 template <typename T>
 Node<T>* AVLTree<T>::remove_node(Node<T> *curr, const T &data) {
-	if (!curr)
+	if (!curr) {
 		return NULL;
-	else if (curr->data == data) {
-		if (!curr->left)
-			return curr->right;
+	} else if (curr->data == data) {
+		if (!curr->left) {
+			Node<T>* right = curr->right;
+			delete curr;
+			return right;
+		}
 		else if (!curr->right) {
-			return curr->left;
+			Node<T>* left = curr->left;
+			delete curr;
+			return left;
 		} else {
 			Node<T> *min = get_and_disconnect_min(curr->right);
 			min->left = curr->left;
@@ -163,13 +176,26 @@ Node<T>* AVLTree<T>::remove_node(Node<T> *curr, const T &data) {
 			if (min != curr->right)
 				min->right = curr->right;
 
+			delete curr;
 			return min;
 		}
-	} else if (data < curr->data)
+	} else if (data < curr->data) {
 		curr->left = remove_node(curr->left, data);
-	else if (data > curr->data)
+
+		if (!curr->left)
+			curr->height_left = 0;
+		else
+			curr->height_left = 1 + max(curr->left->height_right, curr->left->height_left);
+	} else if (data > curr->data) {
 		curr->right = remove_node(curr->right, data);
 
+		if (!curr->right)
+			curr->height_right = 0;
+		else
+			curr->height_right = 1 + max(curr->right->height_right, curr->right->height_left);
+	}
+
+	curr = check_for_imbalances(curr);
 	return curr;
 }
 
@@ -184,8 +210,17 @@ Node<T>* AVLTree<T>::get_and_disconnect_min(Node<T>* node) {
 		node = node->left;
 	}
 
-	if (parent)
+	if (parent) {
+		if (!node->right) {
+			parent->height_left = 0;
+		} else {
+			parent->height_left = 1 + max(node->right->height_right, node->right->height_left);
+		}
+
+		node->height_right = 0;
+
 		parent->left = node->right;
+	}
 
 	return node;
 }

@@ -8,7 +8,6 @@ int main() {
 	tree.remove(39043);
 	tree.insert(5);
 	tree.insert(4);
-	// tree.remove(5);
 	tree.insert(8);
 	tree.insert(3);
 	tree.insert(2);
@@ -23,17 +22,13 @@ int main() {
 	tree.dfs_postorder();
 	cout << "12 Exists: " << tree.find(12) << endl;
 	cout << "39043 Exists: " << tree.find(39043) << endl;
-	// tree.remove(12);
-	// tree.print_tree();
-	// tree.insert(15);
-	// tree.print_tree();
-	// tree.remove(13);
-	// tree.print_tree();
-	// tree.insert(6);
-	// tree.insert(7);
-	// tree.print_tree();
-	// tree.remove(5);
-	// tree.print_tree();
+	tree.remove(12);
+	tree.insert(15);
+	tree.remove(13);
+	tree.insert(6);
+	tree.insert(7);
+	tree.remove(5);
+	tree.print_tree();
 
 	// test RR
 	// AVLTree<int> tree2;
@@ -73,6 +68,20 @@ int main() {
 	// tree2.insert(1);
 	// tree2.insert(2);
 	// tree2.print_tree();
+
+
+	// test remove()
+	// AVLTree<int> tree2;
+	// tree2.insert(6);
+	// tree2.insert(3);
+	// tree2.insert(2);
+	// tree2.insert(1);
+	// tree2.insert(9);
+	// tree2.insert(12);
+	// tree2.insert(8);
+	// tree2.remove(2);
+	// tree2.print_tree();
+
 
 
 	return 0;

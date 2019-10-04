@@ -28,6 +28,7 @@ class AVLTree {
 	void preorder(Node<T>* curr);
 	void postorder(Node<T>* curr);
 	Node<T>* insert_node(Node<T> *curr, const T &data);
+	Node<T>* check_for_imbalances(Node<T>* curr);
 	Node<T>* remove_node(Node<T> *curr, const T &data);
 	Node<T>* rr_rotation(Node<T>* parent);
 	Node<T>* ll_rotation(Node<T>* parent);
