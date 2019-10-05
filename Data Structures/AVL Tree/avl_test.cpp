@@ -82,7 +82,5 @@ int main() {
 	// tree2.remove(2);
 	// tree2.print_tree();
 
-
-
 	return 0;
 }

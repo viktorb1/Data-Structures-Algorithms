@@ -21,6 +21,7 @@ AVLTree<T>::~AVLTree() {
 	destroy_recursive(root);
 }
 
+
 template <typename T>
 void AVLTree<T>::destroy_recursive(Node<T> *node) {
 	if (node) {
@@ -53,6 +54,7 @@ Node<T>* AVLTree<T>::insert_node(Node<T> *curr, const T &data) {
 	return curr;
 }
 
+
 template <typename T>
 Node<T>* AVLTree<T>::check_for_imbalances(Node<T>* curr) {
 	int bf = get_bf(curr);
@@ -71,6 +73,7 @@ Node<T>* AVLTree<T>::check_for_imbalances(Node<T>* curr) {
 
 	return curr;
 }
+
 
 template <typename T>
 int AVLTree<T>::get_bf(Node<T> *curr) {
@@ -123,6 +126,7 @@ Node<T>* AVLTree<T>::lr_rotation(Node<T>* parent) {
 	
 	return new_parent;
 }
+
 
 template <typename T>
 Node<T>* AVLTree<T>::rl_rotation(Node<T>* parent) {
@@ -235,6 +239,7 @@ void AVLTree<T>::print_tree() {
     cout << endl;
 }
   
+
 template <typename T>
 void AVLTree<T>::printLevel(Node<T>* curr, int level) 
 { 
@@ -278,6 +283,7 @@ void AVLTree<T>::dfs_inorder()
 	inorder(root);
 	cout << endl;
 }
+
 
 template <typename T>
 void AVLTree<T>::inorder(Node<T>* curr) 

@@ -47,8 +47,6 @@ public:
 	void dfs_preorder();
 	void dfs_postorder();
 	bool find(const T &data);
-
-
 };
 
 
