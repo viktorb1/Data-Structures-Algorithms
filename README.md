@@ -10,7 +10,7 @@ My implementation of various data structures. Data structures include:
 - Queue
 - Stack
 
-#Sorting algorithms
+# Sorting algorithms
 My implementation of various sorting algorithms. Algorithms include:
 - Bubble Sort
 - Bucket Sort
